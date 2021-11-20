@@ -1,42 +1,30 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, Image, View , FlatList} from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons'
 
 export default function Feed() {
 
-  const feed = [
-    {
-      id: 1,
-      nome: 'Piu-Piu',
-      imgPerfil: require('../assets/images/piupiu.jpg'),
-      img: require('../assets/images/tinytoons.jpg'),
-      aspectRatio: 1.777,
-    },
-    {
-      id: 2,
-      nome: 'Perna',
-      imgPerfil: require('../assets/images/pernalonga.png'),
-      img: require('../assets/images/tinytoons3.jpg'),
-      aspectRatio: 1.777,
-    },
-    {
-      id: 3,
-      nome: 'Taz',
-      imgPerfil: require('../assets/images/taz.jpg'),
-      img: require('../assets/images/tinytoons2.jpg'),
-      aspectRatio: 1.777,
-    },
-  ]
+  const [feed, setFeed] = useState([]);
+  useEffect(function(){
+    async function getData(){
+      const response = await fetch('https://mobile.ect.ufrn.br:3000/feed');
+      const feed = await response.json();
+      setFeed(feed)
+    }
+    getData();
+
+  }, [])
+  
   function renderItem({ item }) {
     return <View style={styles.post}>
     <View style={styles.postheader}>
       <View style={styles.postheaderesquerda}>
-        <Image style={styles.postheaderimg}source={item.imgPerfil}/>
-        <Text>{item.nome}</Text>
+        <Image style={styles.postheaderimg}source={{uri: item.imgPerfilUri}}/>
+        <Text>{item.nomeUsuario}</Text>
       </View> 
       <FontAwesome5 name= "ellipsis-h" size={16} color="black"/>
     </View>
-    <Image style={styles.postimg} aspectRatio={item.aspectRatio} source={item.img}/>
+    <Image style={styles.postimg} aspectRatio={item.aspectRatio} source={{uri: item.imgPostUri}}/>
     <View style={styles.footer}>
       <FontAwesome5 style={styles.postfootericon} name= "heart" size={36} color="black"/>
       <FontAwesome5 style={styles.postfootericon} name= "comment" size={36} color="black"/>
