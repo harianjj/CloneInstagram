@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Constants from 'expo-constants';
 
-import Header from './components/header';
+import Header from './components/Header';
 import Stories from './components/Stories';
 import Feed from './components/Feed';
 
